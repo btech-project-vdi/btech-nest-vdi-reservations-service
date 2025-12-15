@@ -1,6 +1,6 @@
 import { PaginationDto } from './pagination.dto';
 import { IsBoolean, IsOptional, IsString, IsArray } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export class FindLaboratoriesWithReservationsFiltersDto extends PaginationDto {
   @IsString({ message: 'subscriptionDetailId debe ser un UUID válido' })
@@ -11,8 +11,8 @@ export class FindLaboratoriesWithReservationsFiltersDto extends PaginationDto {
   searchTerm?: string;
 
   @IsOptional()
-  @Transform(({ value }) => value === 'true' || value === true)
-  @IsBoolean({ message: 'isActive debe ser un valor booleano' })
+  @IsBoolean({ message: 'El campo isActive debe ser un valor booleano' })
+  @Type(() => Boolean)
   isActive?: boolean;
 
   @IsArray({ message: 'laboratoryEquipmentIds debe ser un array de strings' })

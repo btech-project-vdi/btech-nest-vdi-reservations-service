@@ -1,5 +1,4 @@
 import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
-import { Transform } from 'class-transformer';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { TimePeriod } from 'src/reservation/enums/time-period.enum';
 import { DateFilterType } from 'src/reservation/enums/date-filter-type.enum';
@@ -13,7 +12,6 @@ export class FindLaboratoriesWithReservationsDto extends PaginationDto {
   searchTerm?: string;
 
   @IsOptional()
-  @Transform(({ value }) => value === 'true' || value === true)
   @IsBoolean({ message: 'isActive debe ser un valor booleano' })
   isActive?: boolean;
 
@@ -22,7 +20,9 @@ export class FindLaboratoriesWithReservationsDto extends PaginationDto {
   timePeriod?: TimePeriod;
 
   @IsOptional()
-  @IsEnum(DateFilterType, { message: 'dateFilterType debe ser un valor válido' })
+  @IsEnum(DateFilterType, {
+    message: 'dateFilterType debe ser un valor válido',
+  })
   dateFilterType?: DateFilterType;
 
   @IsOptional()

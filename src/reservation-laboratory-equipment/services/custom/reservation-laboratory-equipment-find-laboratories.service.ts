@@ -19,6 +19,7 @@ export class ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsServi
   ): Promise<
     PaginationResponseDto<FindLaboratoriesWithReservationsResponseDto>
   > {
+    console.log(findLaboratoriesWithReservationsDto);
     const {
       subscriptionDetailId,
       searchTerm,
@@ -51,7 +52,7 @@ export class ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsServi
         {
           subscriptionDetailId,
           searchTerm,
-          isActive,
+          ...(isActive !== undefined && { isActive }),
           laboratoryEquipmentIds: equipmentIds,
           page,
           limit,
