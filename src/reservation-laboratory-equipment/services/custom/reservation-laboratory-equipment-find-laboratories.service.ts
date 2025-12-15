@@ -35,6 +35,7 @@ export class ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsServi
     // 1. Obtener conteo de reservas por equipo con filtros de fecha
     const reservationCountsMap =
       await this.reservationLaboratoryEquipmentGetReservationCountsService.execute(
+        subscriptionDetailId,
         timePeriod,
         dateFilterType,
         startDate,

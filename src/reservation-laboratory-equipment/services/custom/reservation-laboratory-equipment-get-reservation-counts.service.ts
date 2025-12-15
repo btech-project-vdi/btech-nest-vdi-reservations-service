@@ -16,6 +16,7 @@ export class ReservationLaboratoryEquipmentGetReservationCountsService {
   ) {}
 
   async execute(
+    subscriptionDetailId: string,
     timePeriod?: TimePeriod,
     dateFilterType?: DateFilterType,
     startDate?: string,
@@ -28,7 +29,10 @@ export class ReservationLaboratoryEquipmentGetReservationCountsService {
       .leftJoin('rle.reservation', 'reservation')
       .select('rle.laboratoryEquipmentId', 'laboratoryEquipmentId')
       .addSelect('COUNT(rle.reservationLaboratoryEquipmentId)', 'count')
-      .groupBy('rle.laboratoryEquipmentId');
+      .groupBy('rle.laboratoryEquipmentId')
+      .where('reservation.subscriptionDetailId = :subscriptionDetailId', {
+        subscriptionDetailId,
+      });
 
     // Aplicar filtros de fecha
     applyTimePeriodFilterRle(

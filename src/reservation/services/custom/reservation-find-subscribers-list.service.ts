@@ -17,12 +17,20 @@ export class ReservationFindSubscribersListService {
   async execute(
     findSubscribersListDto: FindSubscribersListDto,
   ): Promise<FindSubscribersWithNaturalPersonsResponseDto> {
-    const { term, page = 1, limit = 10 } = findSubscribersListDto;
+    const {
+      term,
+      page = 1,
+      limit = 10,
+      subscriptionDetailId,
+    } = findSubscribersListDto;
 
     const subQuery = this.reservationRepository
       .createQueryBuilder('r')
       .select('r.subscriberId', 'subscriberId')
       .addSelect('MAX(r.createdAt)', 'maxCreatedAt')
+      .where('r.subscriptionDetailId = :subscriptionDetailId', {
+        subscriptionDetailId,
+      })
       .groupBy('r.subscriberId');
 
     if (term?.trim()) {
