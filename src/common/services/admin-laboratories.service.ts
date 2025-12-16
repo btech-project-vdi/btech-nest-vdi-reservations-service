@@ -66,7 +66,6 @@ export class AdminLaboratoriesService {
   ): Promise<
     PaginationResponseDto<LaboratoryWithReservationsFilterResponseDto>
   > {
-    console.log(findLaboratoriesWithReservationsFiltersDto);
     return await this.client.send(
       'laboratoryEquipment.findLaboratoriesWithReservationsFilters',
       findLaboratoriesWithReservationsFiltersDto,
