@@ -10,6 +10,7 @@ export * from './reservation-laboratory-equipment-assign-credentials.service';
 export * from './reservation-laboratory-equipment-find-admin-details.service';
 export * from './reservation-laboratory-equipment-find-laboratories.service';
 export * from './reservation-laboratory-equipment-get-reservation-counts.service';
+export * from './reservation-laboratory-equipment-update-access-status.service';
 export * from './reservation-laboratory-equipment-custom.service';
 
 import { ReservationLaboratoryEquipmentConfirmListService } from './reservation-laboratory-equipment-confirm-list.service';
@@ -25,6 +26,7 @@ import { ReservationLaboratoryEquipmentFindAdminDetailsService } from './reserva
 import { ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsService } from './reservation-laboratory-equipment-find-laboratories.service';
 import { ReservationLaboratoryEquipmentCustomService } from './reservation-laboratory-equipment-custom.service';
 import { ReservationLaboratoryEquipmentGetReservationCountsService } from './reservation-laboratory-equipment-get-reservation-counts.service';
+import { ReservationLaboratoryEquipmentUpdateAccessStatusService } from './reservation-laboratory-equipment-update-access-status.service';
 
 export const RESERVATION_LABORATORY_EQUIPMENT_CUSTOM_SERVICES = [
   ReservationLaboratoryEquipmentConfirmListService,
@@ -40,4 +42,5 @@ export const RESERVATION_LABORATORY_EQUIPMENT_CUSTOM_SERVICES = [
   ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsService,
   ReservationLaboratoryEquipmentCustomService,
   ReservationLaboratoryEquipmentGetReservationCountsService,
+  ReservationLaboratoryEquipmentUpdateAccessStatusService,
 ];

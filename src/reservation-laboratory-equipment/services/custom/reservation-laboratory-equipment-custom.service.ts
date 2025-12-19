@@ -1,8 +1,5 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import {
-  PaginationDto,
-  PaginationResponseDto,
-} from 'src/common/dto/pagination.dto';
+import { PaginationResponseDto } from 'src/common/dto/pagination.dto';
 import { ReservationLaboratoryEquipment } from '../../entities/reservation-laboratory-equipment.entity';
 import { ReservationLaboratoryEquipmentConfirmListService } from './reservation-laboratory-equipment-confirm-list.service';
 import { ReservationLaboratoryEquipmentFindForReminderService } from './reservation-laboratory-equipment-find-for-reminder.service';
@@ -11,9 +8,7 @@ import { ReservationLaboratoryEquipmentGetEquipmentIdsService } from './reservat
 import { ReservationLaboratoryEquipmentGetSubscriberMetadataService } from './reservation-laboratory-equipment-get-subscriber-metadata.service';
 import { ReservationLaboratoryEquipmentGetSubscriberProfileService } from './reservation-laboratory-equipment-get-subscriber-profile.service';
 import { ReservationLaboratoryEquipmentFindAdminDetailsService } from './reservation-laboratory-equipment-find-admin-details.service';
-import { StatusReservation } from 'src/reservation/enums/status-reservation.enum';
 import { CompleteFinishedReservationsResponseDto } from 'src/reservation/dto/complete-finished-reservations.dto';
-import { ConfirmListReservationResponseDto } from 'src/reservation-process-history/dto/confirm-list-reservation.dto';
 import {
   FindAdminReservationDetailsDto,
   FindAdminReservationDetailsResponseDto,
@@ -23,6 +18,15 @@ import {
   FindLaboratoriesWithReservationsResponseDto,
 } from '../../dto/find-laboratories-with-reservations.dto';
 import { ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsService } from './reservation-laboratory-equipment-find-laboratories.service';
+import { ReservationLaboratoryEquipmentUpdateAccessStatusService } from './reservation-laboratory-equipment-update-access-status.service';
+import {
+  UpdateAccessStatusDto,
+  UpdateAccessStatusResponseDto,
+} from '../../dto/update-access-status.dto';
+import {
+  ConfirmListReservationDto,
+  ConfirmListReservationResponseDto,
+} from 'src/reservation-laboratory-equipment/dto/confirm-list-reservation.dto';
 
 @Injectable()
 export class ReservationLaboratoryEquipmentCustomService {
@@ -36,15 +40,14 @@ export class ReservationLaboratoryEquipmentCustomService {
     private readonly reservationLaboratoryEquipmentGetSubscriberProfileService: ReservationLaboratoryEquipmentGetSubscriberProfileService,
     private readonly reservationLaboratoryEquipmentFindAdminDetailsService: ReservationLaboratoryEquipmentFindAdminDetailsService,
     private readonly reservationLaboratoryEquipmentFindLaboratoriesWithReservationsService: ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsService,
+    private readonly reservationLaboratoryEquipmentUpdateAccessStatusService: ReservationLaboratoryEquipmentUpdateAccessStatusService,
   ) {}
 
   async confirmListReservation(
-    paginationDto: PaginationDto,
-    status: StatusReservation | undefined,
+    confirmListReservationDto: ConfirmListReservationDto,
   ): Promise<PaginationResponseDto<ConfirmListReservationResponseDto>> {
     return await this.reservationLaboratoryEquipmentConfirmListService.execute(
-      paginationDto,
-      status,
+      confirmListReservationDto,
     );
   }
 
@@ -99,6 +102,14 @@ export class ReservationLaboratoryEquipmentCustomService {
   > {
     return await this.reservationLaboratoryEquipmentFindLaboratoriesWithReservationsService.execute(
       findLaboratoriesWithReservationsDto,
+    );
+  }
+
+  async updateAccessStatus(
+    updateAccessStatusDto: UpdateAccessStatusDto,
+  ): Promise<UpdateAccessStatusResponseDto> {
+    return await this.reservationLaboratoryEquipmentUpdateAccessStatusService.execute(
+      updateAccessStatusDto,
     );
   }
 }

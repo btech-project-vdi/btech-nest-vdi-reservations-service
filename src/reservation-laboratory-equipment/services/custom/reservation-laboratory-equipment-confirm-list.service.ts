@@ -1,15 +1,15 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ReservationLaboratoryEquipment } from '../../entities/reservation-laboratory-equipment.entity';
+import { PaginationResponseDto } from 'src/common/dto/pagination.dto';
+import { paginateQueryBuilder } from 'src/common/helpers/paginate-query-builder.helper';
+import { formatAdminReservationDetailsResponse } from 'src/reservation-laboratory-equipment/helpers/format-admin-reservation-details-response.helper';
+import { ReservationFindEquipmentMapService } from 'src/reservation/services/custom';
 import {
-  PaginationDto,
-  PaginationResponseDto,
-} from 'src/common/dto/pagination.dto';
-import { paginate } from 'src/common/helpers/paginate.helper';
-import { formatConfirmListReservationResponse } from 'src/reservation-laboratory-equipment/helpers/format-confirm-list-reservation-response.helper';
-import { ReservationCustomService } from 'src/reservation/services/custom';
-import { ConfirmListReservationResponseDto } from 'src/reservation-process-history/dto/confirm-list-reservation.dto';
+  ConfirmListReservationDto,
+  ConfirmListReservationResponseDto,
+} from 'src/reservation-laboratory-equipment/dto/confirm-list-reservation.dto';
 import { StatusReservation } from 'src/reservation/enums/status-reservation.enum';
 
 @Injectable()
@@ -17,34 +17,71 @@ export class ReservationLaboratoryEquipmentConfirmListService {
   constructor(
     @InjectRepository(ReservationLaboratoryEquipment)
     private readonly reservationLaboratoryEquipmentRepository: Repository<ReservationLaboratoryEquipment>,
-    @Inject(forwardRef(() => ReservationCustomService))
-    private readonly reservationCustomService: ReservationCustomService,
+    private readonly reservationFindEquipmentMapService: ReservationFindEquipmentMapService,
   ) {}
 
   async execute(
-    paginationDto: PaginationDto,
-    status: StatusReservation | undefined,
+    findAdminReservationDetailsDto: ConfirmListReservationDto,
   ): Promise<PaginationResponseDto<ConfirmListReservationResponseDto>> {
-    const whereCondition = status ? { status: status } : {};
-    const reservationLaboratoryEquipment =
-      await this.reservationLaboratoryEquipmentRepository.find({
-        relations: ['reservation'],
-        order: {
-          createdAt: 'ASC',
-        },
-        where: whereCondition,
+    const { accessStatus, ...paginationDto } = findAdminReservationDetailsDto;
+
+    const queryBuilder = this.reservationLaboratoryEquipmentRepository
+      .createQueryBuilder('rle')
+      .leftJoinAndSelect('rle.reservation', 'reservation')
+      .select([
+        'rle.reservationLaboratoryEquipmentId',
+        'rle.laboratoryEquipmentId',
+        'rle.subscriptionDetailId',
+        'rle.reservationDate',
+        'rle.reservationFinalDate',
+        'rle.initialHour',
+        'rle.finalHour',
+        'rle.metadata',
+        'rle.status',
+        'rle.createdAt',
+        'reservation.reservationId',
+        'reservation.subscriberId',
+        'reservation.subscriptionDetailId',
+        'reservation.username',
+        'reservation.metadata',
+        'reservation.createdAt',
+      ])
+      .orderBy('rle.createdAt', 'DESC')
+      .where('rle.status = :status', { status: StatusReservation.COMPLETED });
+
+    if (accessStatus && accessStatus.length > 0)
+      queryBuilder.andWhere('rle.accessStatus IN (:...accessStatus)', {
+        accessStatus,
       });
-    const laboratoryEquipmentIds = reservationLaboratoryEquipment.map(
-      (rle) => rle.laboratoryEquipmentId,
+
+    const paginatedDetails = await paginateQueryBuilder(
+      queryBuilder,
+      paginationDto,
     );
-    const equipmentMap =
-      await this.reservationCustomService.findEquipmentMapData(
-        laboratoryEquipmentIds,
-      );
-    const confirmListReservations = formatConfirmListReservationResponse(
-      reservationLaboratoryEquipment,
+
+    const foundLaboratoryEquipmentIds = [
+      ...new Set(
+        paginatedDetails.data
+          .map((rle) => rle.laboratoryEquipmentId)
+          .filter(Boolean),
+      ),
+    ];
+
+    const equipmentMap = await this.reservationFindEquipmentMapService.execute(
+      foundLaboratoryEquipmentIds,
+    );
+
+    const formattedData = formatAdminReservationDetailsResponse(
+      paginatedDetails.data,
       equipmentMap,
     );
-    return await paginate(confirmListReservations, paginationDto);
+
+    return {
+      data: formattedData,
+      total: paginatedDetails.total,
+      page: paginatedDetails.page,
+      limit: paginatedDetails.limit,
+      totalPages: paginatedDetails.totalPages,
+    };
   }
 }

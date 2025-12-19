@@ -10,6 +10,7 @@ import { Timestamped } from 'src/common/entities/timestamped.entity';
 import { ReservationProcessHistory } from 'src/reservation-process-history/entities/reservation-process-history.entity';
 import { Reservation } from 'src/reservation/entities/reservation.entity';
 import { StatusReservation } from 'src/reservation/enums/status-reservation.enum';
+import { AccessStatus } from '../enums/access-status.enum';
 
 @Entity({ name: 'reservationLaboratoryEquipment' })
 export class ReservationLaboratoryEquipment extends Timestamped {
@@ -79,4 +80,12 @@ export class ReservationLaboratoryEquipment extends Timestamped {
     nullable: false,
   })
   status: StatusReservation;
+
+  @Column({
+    type: 'enum',
+    enum: AccessStatus,
+    default: AccessStatus.PENDING,
+    nullable: false,
+  })
+  accessStatus: AccessStatus;
 }
