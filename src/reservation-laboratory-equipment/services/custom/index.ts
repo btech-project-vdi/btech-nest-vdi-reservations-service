@@ -11,6 +11,8 @@ export * from './reservation-laboratory-equipment-find-admin-details.service';
 export * from './reservation-laboratory-equipment-find-laboratories.service';
 export * from './reservation-laboratory-equipment-get-reservation-counts.service';
 export * from './reservation-laboratory-equipment-update-access-status.service';
+export * from './reservation-laboratory-equipment-find-chart-data.service';
+export * from './reservation-laboratory-equipment-find-chart-data-by-hours.service';
 export * from './reservation-laboratory-equipment-custom.service';
 
 import { ReservationLaboratoryEquipmentConfirmListService } from './reservation-laboratory-equipment-confirm-list.service';
@@ -27,6 +29,8 @@ import { ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsService }
 import { ReservationLaboratoryEquipmentCustomService } from './reservation-laboratory-equipment-custom.service';
 import { ReservationLaboratoryEquipmentGetReservationCountsService } from './reservation-laboratory-equipment-get-reservation-counts.service';
 import { ReservationLaboratoryEquipmentUpdateAccessStatusService } from './reservation-laboratory-equipment-update-access-status.service';
+import { ReservationLaboratoryEquipmentFindChartDataService } from './reservation-laboratory-equipment-find-chart-data.service';
+import { ReservationLaboratoryEquipmentFindChartDataByHoursService } from './reservation-laboratory-equipment-find-chart-data-by-hours.service';
 
 export const RESERVATION_LABORATORY_EQUIPMENT_CUSTOM_SERVICES = [
   ReservationLaboratoryEquipmentConfirmListService,
@@ -43,4 +47,6 @@ export const RESERVATION_LABORATORY_EQUIPMENT_CUSTOM_SERVICES = [
   ReservationLaboratoryEquipmentCustomService,
   ReservationLaboratoryEquipmentGetReservationCountsService,
   ReservationLaboratoryEquipmentUpdateAccessStatusService,
+  ReservationLaboratoryEquipmentFindChartDataService,
+  ReservationLaboratoryEquipmentFindChartDataByHoursService,
 ];

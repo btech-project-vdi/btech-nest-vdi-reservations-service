@@ -5,6 +5,14 @@ import { FindAdminReservationDetailsDto } from '../dto/find-admin-reservation-de
 import { FindLaboratoriesWithReservationsDto } from '../dto/find-laboratories-with-reservations.dto';
 import { UpdateAccessStatusDto } from '../dto/update-access-status.dto';
 import { ConfirmListReservationDto } from '../dto/confirm-list-reservation.dto';
+import {
+  FindReservationsChartDataDto,
+  FindReservationsChartDataResponseDto,
+} from '../dto/find-reservations-chart-data.dto';
+import {
+  FindReservationsChartDataByHoursDto,
+  FindReservationsChartDataByHoursResponseDto,
+} from '../dto/find-reservations-chart-data-by-hours.dto';
 
 @Controller()
 export class ReservationLaboratoryEquipmentCustomController {
@@ -46,6 +54,25 @@ export class ReservationLaboratoryEquipmentCustomController {
   updateAccessStatus(@Payload() updateAccessStatusDto: UpdateAccessStatusDto) {
     return this.reservationLaboratoryEquipmentCustomService.updateAccessStatus(
       updateAccessStatusDto,
+    );
+  }
+
+  @MessagePattern('reservationLaboratoryEquipment.findChartData')
+  findChartData(
+    @Payload() findReservationsChartDataDto: FindReservationsChartDataDto,
+  ): Promise<FindReservationsChartDataResponseDto> {
+    return this.reservationLaboratoryEquipmentCustomService.findChartData(
+      findReservationsChartDataDto,
+    );
+  }
+
+  @MessagePattern('reservationLaboratoryEquipment.findChartDataByHours')
+  findChartDataByHours(
+    @Payload()
+    findReservationsChartDataByHoursDto: FindReservationsChartDataByHoursDto,
+  ): Promise<FindReservationsChartDataByHoursResponseDto> {
+    return this.reservationLaboratoryEquipmentCustomService.findChartDataByHours(
+      findReservationsChartDataByHoursDto,
     );
   }
 }

@@ -27,6 +27,16 @@ import {
   ConfirmListReservationDto,
   ConfirmListReservationResponseDto,
 } from 'src/reservation-laboratory-equipment/dto/confirm-list-reservation.dto';
+import {
+  FindReservationsChartDataDto,
+  FindReservationsChartDataResponseDto,
+} from '../../dto/find-reservations-chart-data.dto';
+import { ReservationLaboratoryEquipmentFindChartDataService } from './reservation-laboratory-equipment-find-chart-data.service';
+import {
+  FindReservationsChartDataByHoursDto,
+  FindReservationsChartDataByHoursResponseDto,
+} from '../../dto/find-reservations-chart-data-by-hours.dto';
+import { ReservationLaboratoryEquipmentFindChartDataByHoursService } from './reservation-laboratory-equipment-find-chart-data-by-hours.service';
 
 @Injectable()
 export class ReservationLaboratoryEquipmentCustomService {
@@ -41,6 +51,8 @@ export class ReservationLaboratoryEquipmentCustomService {
     private readonly reservationLaboratoryEquipmentFindAdminDetailsService: ReservationLaboratoryEquipmentFindAdminDetailsService,
     private readonly reservationLaboratoryEquipmentFindLaboratoriesWithReservationsService: ReservationLaboratoryEquipmentFindLaboratoriesWithReservationsService,
     private readonly reservationLaboratoryEquipmentUpdateAccessStatusService: ReservationLaboratoryEquipmentUpdateAccessStatusService,
+    private readonly reservationLaboratoryEquipmentFindChartDataService: ReservationLaboratoryEquipmentFindChartDataService,
+    private readonly reservationLaboratoryEquipmentFindChartDataByHoursService: ReservationLaboratoryEquipmentFindChartDataByHoursService,
   ) {}
 
   async confirmListReservation(
@@ -110,6 +122,22 @@ export class ReservationLaboratoryEquipmentCustomService {
   ): Promise<UpdateAccessStatusResponseDto> {
     return await this.reservationLaboratoryEquipmentUpdateAccessStatusService.execute(
       updateAccessStatusDto,
+    );
+  }
+
+  async findChartData(
+    findReservationsChartDataDto: FindReservationsChartDataDto,
+  ): Promise<FindReservationsChartDataResponseDto> {
+    return await this.reservationLaboratoryEquipmentFindChartDataService.execute(
+      findReservationsChartDataDto,
+    );
+  }
+
+  async findChartDataByHours(
+    findReservationsChartDataByHoursDto: FindReservationsChartDataByHoursDto,
+  ): Promise<FindReservationsChartDataByHoursResponseDto> {
+    return await this.reservationLaboratoryEquipmentFindChartDataByHoursService.execute(
+      findReservationsChartDataByHoursDto,
     );
   }
 }

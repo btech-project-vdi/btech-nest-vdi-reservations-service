@@ -1,0 +1,8 @@
+export enum ChartTimePeriod {
+  CUSTOM = 'CUSTOM',
+  LAST_WEEK = 'LAST_WEEK',
+  LAST_30_DAYS = 'LAST_30_DAYS',
+  LAST_3_MONTHS = 'LAST_3_MONTHS',
+  LAST_YEAR = 'LAST_YEAR',
+  CURRENT_MONTH = 'CURRENT_MONTH',
+}
