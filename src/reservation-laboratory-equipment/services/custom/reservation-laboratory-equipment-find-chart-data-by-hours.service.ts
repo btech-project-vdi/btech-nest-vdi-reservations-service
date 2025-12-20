@@ -48,11 +48,11 @@ export class ReservationLaboratoryEquipmentFindChartDataByHoursService {
       .createQueryBuilder('rle')
       .select('HOUR(rle.initialHour)', 'hour')
       .addSelect('COUNT(*)', 'count')
-      .where('DATE(rle.reservationDate) BETWEEN :fromDate AND :toDate', {
-        fromDate: fromDate.toISOString().split('T')[0],
-        toDate: toDate.toISOString().split('T')[0],
+      .where('rle.reservationDate BETWEEN :fromDate AND :toDate', {
+        fromDate,
+        toDate,
       })
-      .groupBy('HOUR(rle.initialHour)')
+      .groupBy('hour')
       .orderBy('hour', 'ASC');
 
     if (laboratoryEquipmentIds && laboratoryEquipmentIds.length > 0)
@@ -64,7 +64,7 @@ export class ReservationLaboratoryEquipmentFindChartDataByHoursService {
       );
 
     const rawResults = await queryBuilder.getRawMany<{
-      hour: string | number;
+      hour: number;
       count: string;
     }>();
 

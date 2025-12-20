@@ -12,13 +12,12 @@ export const calculateChartTimePeriodDatesForHours = (
   endDate?: string,
 ): ChartTimePeriodDatesForHours => {
   const now = getCurrentDateInTimezone('America/Lima');
-  let fromDate: Date;
-  let toDate: Date = now;
+  let fromDate: Date = new Date(now);
+  let toDate: Date = new Date(now);
 
+  // Default behavior: current day from 00:00 to 23:59
   if (!timePeriod) {
-    fromDate = new Date(now);
-    fromDate.setHours(now.getHours() - 24, 0, 0, 0);
-    toDate = new Date(now);
+    fromDate.setHours(0, 0, 0, 0);
     toDate.setHours(23, 59, 59, 999);
     return { fromDate, toDate };
   }
@@ -31,42 +30,33 @@ export const calculateChartTimePeriodDatesForHours = (
         toDate = new Date(endDate);
         toDate.setHours(23, 59, 59, 999);
       } else {
-        fromDate = new Date(now);
-        fromDate.setHours(now.getHours() - 24, 0, 0, 0);
-        toDate = new Date(now);
+        // Fallback to current day if custom dates are not provided
+        fromDate.setHours(0, 0, 0, 0);
         toDate.setHours(23, 59, 59, 999);
       }
       break;
 
     case ChartTimePeriod.LAST_WEEK:
-      fromDate = new Date(now);
       fromDate.setDate(now.getDate() - 7);
       fromDate.setHours(0, 0, 0, 0);
-      toDate = new Date(now);
       toDate.setHours(23, 59, 59, 999);
       break;
 
     case ChartTimePeriod.LAST_30_DAYS:
-      fromDate = new Date(now);
       fromDate.setDate(now.getDate() - 30);
       fromDate.setHours(0, 0, 0, 0);
-      toDate = new Date(now);
       toDate.setHours(23, 59, 59, 999);
       break;
 
     case ChartTimePeriod.LAST_3_MONTHS:
-      fromDate = new Date(now);
       fromDate.setMonth(now.getMonth() - 3);
       fromDate.setHours(0, 0, 0, 0);
-      toDate = new Date(now);
       toDate.setHours(23, 59, 59, 999);
       break;
 
     case ChartTimePeriod.LAST_YEAR:
-      fromDate = new Date(now);
-      fromDate.setMonth(now.getMonth() - 12);
+      fromDate.setFullYear(now.getFullYear() - 1);
       fromDate.setHours(0, 0, 0, 0);
-      toDate = new Date(now);
       toDate.setHours(23, 59, 59, 999);
       break;
 
@@ -78,10 +68,10 @@ export const calculateChartTimePeriodDatesForHours = (
       break;
 
     default:
-      fromDate = new Date(now);
-      fromDate.setHours(now.getHours() - 24, 0, 0, 0);
-      toDate = new Date(now);
+      // Fallback to current day if an unknown timePeriod is provided
+      fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
+      break;
   }
 
   return { fromDate, toDate };
