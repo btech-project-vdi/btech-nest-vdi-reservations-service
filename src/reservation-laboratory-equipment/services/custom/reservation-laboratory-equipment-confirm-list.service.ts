@@ -11,6 +11,7 @@ import {
   ConfirmListReservationResponseDto,
 } from 'src/reservation-laboratory-equipment/dto/confirm-list-reservation.dto';
 import { StatusReservation } from 'src/reservation/enums/status-reservation.enum';
+import { OrderByField } from 'src/reservation-laboratory-equipment/enums/order-by-field.enum';
 
 @Injectable()
 export class ReservationLaboratoryEquipmentConfirmListService {
@@ -23,7 +24,10 @@ export class ReservationLaboratoryEquipmentConfirmListService {
   async execute(
     findAdminReservationDetailsDto: ConfirmListReservationDto,
   ): Promise<PaginationResponseDto<ConfirmListReservationResponseDto>> {
-    const { accessStatus, ...paginationDto } = findAdminReservationDetailsDto;
+    const { accessStatus, orderBy, ...paginationDto } =
+      findAdminReservationDetailsDto;
+
+    const orderByField = orderBy || OrderByField.CREATED_AT;
 
     const queryBuilder = this.reservationLaboratoryEquipmentRepository
       .createQueryBuilder('rle')
@@ -39,6 +43,7 @@ export class ReservationLaboratoryEquipmentConfirmListService {
         'rle.metadata',
         'rle.status',
         'rle.createdAt',
+        'rle.updatedAt',
         'reservation.reservationId',
         'reservation.subscriberId',
         'reservation.subscriptionDetailId',
@@ -46,7 +51,7 @@ export class ReservationLaboratoryEquipmentConfirmListService {
         'reservation.metadata',
         'reservation.createdAt',
       ])
-      .orderBy('rle.createdAt', 'DESC')
+      .orderBy(`rle.${orderByField}`, 'DESC')
       .where('rle.status = :status', { status: StatusReservation.COMPLETED });
 
     if (accessStatus && accessStatus.length > 0)

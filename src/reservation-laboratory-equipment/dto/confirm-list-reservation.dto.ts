@@ -1,6 +1,7 @@
 import { IsEnum, IsOptional, IsArray } from 'class-validator';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { AccessStatus } from '../enums/access-status.enum';
+import { OrderByField } from '../enums/order-by-field.enum';
 import { StatusReservation } from 'src/reservation/enums/status-reservation.enum';
 
 export class ConfirmListReservationDto extends PaginationDto {
@@ -11,6 +12,12 @@ export class ConfirmListReservationDto extends PaginationDto {
     message: 'El estado de acceso debe ser una de las opciones válidas',
   })
   accessStatus?: AccessStatus[];
+
+  @IsOptional()
+  @IsEnum(OrderByField, {
+    message: 'El campo de ordenamiento debe ser createdAt o updatedAt',
+  })
+  orderBy?: OrderByField;
 }
 
 export class LaboratoryEquipmentInfoDto {
