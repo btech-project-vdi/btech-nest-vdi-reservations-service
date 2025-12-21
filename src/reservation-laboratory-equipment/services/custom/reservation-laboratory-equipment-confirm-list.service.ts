@@ -11,7 +11,7 @@ import {
   ConfirmListReservationResponseDto,
 } from 'src/reservation-laboratory-equipment/dto/confirm-list-reservation.dto';
 import { StatusReservation } from 'src/reservation/enums/status-reservation.enum';
-import { OrderByField } from 'src/reservation-laboratory-equipment/enums/order-by-field.enum';
+import { SortByField } from 'src/reservation-laboratory-equipment/enums/sort-by-field.enum';
 
 @Injectable()
 export class ReservationLaboratoryEquipmentConfirmListService {
@@ -27,7 +27,7 @@ export class ReservationLaboratoryEquipmentConfirmListService {
     const { accessStatus, orderBy, ...paginationDto } =
       findAdminReservationDetailsDto;
 
-    const orderByField = orderBy || OrderByField.CREATED_AT;
+    const orderByField = orderBy || SortByField.CREATED_AT;
 
     const queryBuilder = this.reservationLaboratoryEquipmentRepository
       .createQueryBuilder('rle')
