@@ -17,7 +17,7 @@ export class ConfirmListReservationDto extends PaginationDto {
   @IsEnum(SortByField, {
     message: 'El campo de ordenamiento debe ser createdAt o updatedAt',
   })
-  orderBy?: SortByField;
+  sortBy?: SortByField;
 }
 
 export class LaboratoryEquipmentInfoDto {

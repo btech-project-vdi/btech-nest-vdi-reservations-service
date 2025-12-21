@@ -24,10 +24,10 @@ export class ReservationLaboratoryEquipmentConfirmListService {
   async execute(
     findAdminReservationDetailsDto: ConfirmListReservationDto,
   ): Promise<PaginationResponseDto<ConfirmListReservationResponseDto>> {
-    const { accessStatus, orderBy, ...paginationDto } =
+    const { accessStatus, sortBy, ...paginationDto } =
       findAdminReservationDetailsDto;
 
-    const orderByField = orderBy || SortByField.CREATED_AT;
+    const sortByField = sortBy || SortByField.CREATED_AT;
 
     const queryBuilder = this.reservationLaboratoryEquipmentRepository
       .createQueryBuilder('rle')
@@ -51,7 +51,7 @@ export class ReservationLaboratoryEquipmentConfirmListService {
         'reservation.metadata',
         'reservation.createdAt',
       ])
-      .orderBy(`rle.${orderByField}`, 'DESC')
+      .orderBy(`rle.${sortByField}`, 'DESC')
       .where('rle.status = :status', { status: StatusReservation.COMPLETED });
 
     if (accessStatus && accessStatus.length > 0)
