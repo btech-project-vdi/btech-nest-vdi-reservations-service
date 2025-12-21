@@ -27,7 +27,7 @@ export class ReservationLaboratoryEquipmentConfirmListService {
     const { accessStatus, sortBy, ...paginationDto } =
       findAdminReservationDetailsDto;
 
-    const sortByField = sortBy || SortByField.CREATED_AT;
+    const sortByField = sortBy || SortByField.RESERVATION_DATE;
 
     const queryBuilder = this.reservationLaboratoryEquipmentRepository
       .createQueryBuilder('rle')

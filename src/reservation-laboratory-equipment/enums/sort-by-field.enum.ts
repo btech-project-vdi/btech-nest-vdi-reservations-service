@@ -1,4 +1,4 @@
 export enum SortByField {
-  CREATED_AT = 'createdAt',
+  RESERVATION_DATE = 'reservationDate',
   UPDATED_AT = 'updatedAt',
 }
