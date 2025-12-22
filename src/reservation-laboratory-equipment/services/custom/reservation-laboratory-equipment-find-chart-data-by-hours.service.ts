@@ -32,7 +32,7 @@ export class ReservationLaboratoryEquipmentFindChartDataByHoursService {
 
       if (diffDays < 3)
         throw new RpcException({
-          statusCode: HttpStatus.BAD_REQUEST,
+          status: HttpStatus.BAD_REQUEST,
           message:
             'La personalización de rango de fechas debe ser de al menos 3 días.',
         });
