@@ -5,6 +5,7 @@ import {
   IsArray,
   ValidateIf,
   Matches,
+  IsNotEmpty,
 } from 'class-validator';
 import { ChartTimePeriod } from '../enums/chart-time-period.enum';
 
@@ -42,6 +43,10 @@ export class FindReservationsChartDataDto {
     message: 'endDate debe tener formato YYYY-MM-DD',
   })
   endDate?: string;
+
+  @IsNotEmpty({ message: 'subscriptionDetailId es requerido' })
+  @IsString({ message: 'subscriptionDetailId debe ser un string' })
+  subscriptionDetailId: string;
 }
 
 export class ReservationCountByDayDto {

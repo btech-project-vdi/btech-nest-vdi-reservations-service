@@ -24,7 +24,7 @@ export class ReservationLaboratoryEquipmentConfirmListService {
   async execute(
     findAdminReservationDetailsDto: ConfirmListReservationDto,
   ): Promise<PaginationResponseDto<ConfirmListReservationResponseDto>> {
-    const { accessStatus, sortBy, ...paginationDto } =
+    const { accessStatus, sortBy, subscriptionDetailId, ...paginationDto } =
       findAdminReservationDetailsDto;
 
     const sortByField = sortBy || SortByField.RESERVATION_DATE;
@@ -53,6 +53,14 @@ export class ReservationLaboratoryEquipmentConfirmListService {
       ])
       .orderBy(`rle.${sortByField}`, 'DESC')
       .where('rle.status = :status', { status: StatusReservation.COMPLETED });
+
+    if (subscriptionDetailId)
+      queryBuilder.andWhere(
+        'rle.subscriptionDetailId = :subscriptionDetailId',
+        {
+          subscriptionDetailId,
+        },
+      );
 
     if (accessStatus && accessStatus.length > 0)
       queryBuilder.andWhere('rle.accessStatus IN (:...accessStatus)', {

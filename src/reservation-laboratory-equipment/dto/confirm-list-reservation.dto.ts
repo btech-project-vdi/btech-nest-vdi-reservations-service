@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsArray } from 'class-validator';
+import { IsEnum, IsOptional, IsArray, IsString } from 'class-validator';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { AccessStatus } from '../enums/access-status.enum';
 import { StatusReservation } from 'src/reservation/enums/status-reservation.enum';
@@ -18,6 +18,10 @@ export class ConfirmListReservationDto extends PaginationDto {
     message: 'El campo de ordenamiento debe ser createdAt o updatedAt',
   })
   sortBy?: SortByField;
+
+  @IsOptional()
+  @IsString({ message: 'subscriptionDetailId debe ser un string' })
+  subscriptionDetailId?: string;
 }
 
 export class LaboratoryEquipmentInfoDto {

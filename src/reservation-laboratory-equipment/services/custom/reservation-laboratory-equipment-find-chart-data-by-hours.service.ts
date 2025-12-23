@@ -21,8 +21,13 @@ export class ReservationLaboratoryEquipmentFindChartDataByHoursService {
   async execute(
     findReservationsChartDataByHoursDto: FindReservationsChartDataByHoursDto,
   ): Promise<FindReservationsChartDataByHoursResponseDto> {
-    const { laboratoryEquipmentIds, timePeriod, startDate, endDate } =
-      findReservationsChartDataByHoursDto;
+    const {
+      laboratoryEquipmentIds,
+      timePeriod,
+      startDate,
+      endDate,
+      subscriptionDetailId,
+    } = findReservationsChartDataByHoursDto;
 
     if (timePeriod === ChartTimePeriod.CUSTOM && startDate && endDate) {
       const start = new Date(startDate);
@@ -51,6 +56,9 @@ export class ReservationLaboratoryEquipmentFindChartDataByHoursService {
       .where('rle.reservationDate BETWEEN :fromDate AND :toDate', {
         fromDate,
         toDate,
+      })
+      .andWhere('rle.subscriptionDetailId = :subscriptionDetailId', {
+        subscriptionDetailId,
       })
       .groupBy('hour')
       .orderBy('hour', 'ASC');
